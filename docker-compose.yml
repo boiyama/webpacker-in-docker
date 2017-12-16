@@ -1,13 +1,14 @@
-version: "2"
+version: "3"
 services:
-  project:
-    container_name: project
-    image: rails-for-webpacker
+  myproject:
+    container_name: myproject
+    image: myrails
     command: rails server -b 0.0.0.0
     environment:
-      DATABASE_URL: "mysql2://root:11111111@mysql/project"
+      DATABASE_URL: "mysql2://root:11111111@mysql/myproject"
+    #   DATABASE_URL: "postgresql://postgres:11111111@postgres/myproject"
     volumes:
-       - "./project:/workdir"
+       - "./myproject:/workdir"
     ports:
       - "3000:3000"
   mysql:
@@ -15,6 +16,16 @@ services:
     image: "mysql:5.6"
     environment:
       MYSQL_ROOT_PASSWORD: 11111111
-      MYSQL_DATABASE: project
+      MYSQL_DATABASE: myproject
     volumes:
        - /var/lib/mysql/data
+  # postgres:
+  #   container_name: postgres
+  #   image: "postgres:9.6"
+  #   environment:
+  #     POSTGRES_PASSWORD: 11111111
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_DB: myproject
+  #     PGDATA: /var/lib/postgresql/data/pgdata
+  #   volumes:
+  #      - /var/lib/postgresql/data/pgdata

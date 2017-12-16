@@ -1,4 +1,4 @@
-FROM rails-for-webpacker
+FROM myrails
 
 ADD . /workdir
 

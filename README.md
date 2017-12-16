@@ -1,55 +1,56 @@
-- rails-for-webpackerイメージをビルドする
+# How to run Webpacker in Docker container
+
+* Build Rails Docker image
 
 ```sh
-docker build -t rails-for-webpacker rails-for-webpacker
+$ docker build -t myrails myrails
 ```
 
-- rails newする
+* Run `rails new`
 
 ```sh
-docker run -it --rm -v $(pwd):/workdir rails-for-webpacker rails new project --skip-bundle
-cd project
+$ docker run -it --rm -v $(pwd):/workdir myrails rails new myproject --skip-bundle
+$ cd myproject
 ```
 
-- Gemfileにwebpackerを追加する
-
-- bundle installする
+* Add webpacker and mysql2 to Gemfile
 
 ```sh
-docker run -it --rm -v $(pwd):/workdir rails-for-webpacker bin/bundle install --path vendor/bundle
+$ echo "gem 'webpacker'" >> Gemfile
+$ echo "gem 'mysql2'" >> Gemfile
 ```
 
-- webpacker installする
+* Run `bundle install`
 
 ```sh
-docker run -it --rm -v $(pwd):/workdir rails-for-webpacker bin/rails webpacker:install
+$ docker run -it --rm -v $(pwd):/workdir myrails bundle install --path vendor/bundle
 ```
 
-- webpacker install vueする
+* Run `rails webpacker:install`
 
 ```sh
-docker run -it --rm -v $(pwd):/workdir rails-for-webpacker bin/rails webpacker:install:vue
+$ docker run -it --rm -v $(pwd):/workdir myrails rails webpacker:install
 ```
 
-- サーバー起動する
+* Run dev server
 
 ```sh
-cd ..
-docker-compose up -d
-docker-compose ps
-docker-compose logs project
+$ cd ..
+$ docker-compose up -d
+$ docker-compose ps
+$ docker-compose logs myproject
 ```
 
-- 起動したら`http://127.0.0.1:3000`
+Visit [http://127.0.0.1:3000](http://127.0.0.1:3000)
 
-- 成果物をビルドする
+* Build your app Docker image
 
 ```sh
-docker build -t project project
+$ docker build -t myapp myproject
 ```
 
-- 成果物を起動する
+* Run your app
 
 ```sh
-docker run -d -p 3000:3000 project
+$ docker run -d -p 3000:3000 myapp
 ```
